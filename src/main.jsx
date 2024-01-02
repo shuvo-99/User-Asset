@@ -5,12 +5,18 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './index.css'
+import CreateUser from './CreateUser';
+import UserList from './UserList';
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world Shuvo!</div>,
+    element: <UserList></UserList>,
   },
+  {
+    path:"/createUser",
+    element: <CreateUser></CreateUser>
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
