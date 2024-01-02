@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import {
   Container,
   Button,
@@ -12,35 +13,81 @@ import {
   TableRow,
   TableCell,
   TableHead,
+  TextField,
 } from "@mui/material";
 
 const Profile = () => {
   const [openModal, setOpenModal] = useState(false);
   const [newAsset, setNewAsset] = useState("");
   const [newAssetValue, setNewAssetValue] = useState("");
+  const [editAsset, setEditAsset] = useState(null);
   const handleOpenModal = () => {
     setOpenModal(true);
   };
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
+  const handleOpenCreateModal = () => {
+    setCreateModalOpen(true);
+  };
+
+  const handleCloseCreateModal = () => {
+    setCreateModalOpen(false);
+  };
   const handleCloseModal = () => {
     setOpenModal(false);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevents the default form submission behavior
+
+    const formData = new FormData(event.target);
+    const assetName = formData.get("name");
+    const assetValue = formData.get("value");
+    const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with your actual user ID
+
+    const assetData = {
+      name: assetName,
+      assetvalue: assetValue,
+      userId: userId,
+    };
+
+    axios
+      .post(
+        "http://192.168.22.131:3003/api/v1/administration/addAsset",
+        assetData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Asset added successfully:", response.data);
+        handleCloseCreateModal(); // Close the modal after successful asset addition
+      })
+      .catch((error) => {
+        console.error("Error adding asset:", error.message);
+        // Handle errors here
+      });
+    handleCloseCreateModal();
+  };
+
   const userData = {
     name: "John Doe",
     dob: "January 1, 1990",
     image: "https://via.placeholder.com/150",
   };
-  const handleAddAsset = () => {
-    console.log("New Asset:", newAsset, "Value:", newAssetValue);
 
-    setNewAsset("");
-    setNewAssetValue("");
-    setOpenModal(false);
+  const handleEdit = (asset) => {
+    setEditAsset(asset); // Set the asset being edited
+    setNewAsset(asset.name); // Autofill the name field in the edit modal
+    setNewAssetValue(asset.value); // Autofill the value field in the edit modal
+    setOpenModal(true); // Open the modal for editing
   };
 
   const assets = [
-    { name: "Asset 1", value: "$1000" },
-    { name: "Asset 2", value: "$2500" },
+    { id: "1", name: "Asset 1", value: "$1000" },
+    { id: "2", name: "Asset 2", value: "$2500" },
     // Add more assets as needed
   ];
   return (
@@ -97,7 +144,7 @@ const Profile = () => {
           top: "250px",
         }}
       >
-        <Button variant="contained" onClick={handleOpenModal}>
+        <Button variant="contained" onClick={handleOpenCreateModal}>
           Add Asset
         </Button>
       </Box>
@@ -139,6 +186,16 @@ const Profile = () => {
                         Value
                       </Typography>
                     </TableCell>
+                    <TableCell>
+                      {" "}
+                      <Typography
+                        variant="h6"
+                        textAlign={"center"}
+                        gutterBottom
+                      >
+                        Update
+                      </Typography>
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -165,6 +222,9 @@ const Profile = () => {
                           {asset.value}
                         </Typography>
                       </TableCell>
+                      <TableCell>
+                        <Button onClick={() => handleEdit(asset)}>Edit</Button>
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -172,37 +232,108 @@ const Profile = () => {
             </TableContainer>
           </>
         )}
+
+        <Modal
+          open={createModalOpen}
+          onClose={handleCloseCreateModal}
+          aria-labelledby="create-modal-title"
+          aria-describedby="create-modal-description"
+        >
+          <div className="form">
+            <Box
+              component={"form"}
+              onSubmit={handleSubmit}
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                bgcolor: "white",
+                border: "2px solid ",
+                p: 4,
+              }}
+            >
+              <h3 style={{ textAlign: "center" }}>Create Asset</h3>
+              <div>
+                <TextField
+                  required
+                  name="name"
+                  id="filled-required"
+                  label="Asset Name"
+                  variant="filled"
+                  onChange={(e) => setNewAsset(e.target.value)}
+                />
+              </div>
+              <div>
+                <TextField
+                  required
+                  name="value"
+                  id="filled-required"
+                  label="Asset Value"
+                  type="text"
+                  variant="filled"
+                  onChange={(e) => setNewAssetValue(e.target.value)}
+                />
+              </div>
+
+              <div className="form-btn">
+                <Button type="submit" variant="outlined">
+                  Submit
+                </Button>
+              </div>
+            </Box>
+          </div>
+        </Modal>
         <Modal
           open={openModal}
           onClose={handleCloseModal}
           aria-labelledby="modal-title"
           aria-describedby="modal-description"
         >
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              bgcolor: "white",
-              border: "2px solid #000",
-              p: 4,
-            }}
-          >
-            <Typography variant="h6" id="modal-title" gutterBottom>
-              Modal Title
-            </Typography>
-            <Typography variant="body1" id="modal-description">
-              This is a modal dialog. You can put your content here.
-            </Typography>
-            <Button
-              variant="contained"
-              onClick={handleCloseModal}
-              sx={{ marginTop: "20px" }}
+          <div className="form">
+            <Box
+              component={"form"}
+              onSubmit={handleSubmit}
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                bgcolor: "white",
+                border: "2px solid ",
+                p: 4,
+              }}
             >
-              Close Modal
-            </Button>
-          </Box>
+              <h3 style={{ textAlign: "center" }}>Create Asset</h3>
+              <div>
+                <TextField
+                  required
+                  name="name"
+                  id="filled-required"
+                  label="Asset Name"
+                  variant="filled"
+                  value={editAsset ? editAsset.name : ""}
+                />
+              </div>
+              <div>
+                <TextField
+                  required
+                  name="value"
+                  id="filled-required"
+                  label="Asset Value"
+                  type="text"
+                  variant="filled"
+                  value={editAsset ? editAsset.value : ""}
+                />
+              </div>
+
+              <div className="form-btn">
+                <Button type="submit" variant="outlined">
+                  Submit
+                </Button>
+              </div>
+            </Box>
+          </div>
         </Modal>
       </Box>
     </>
