@@ -3,14 +3,39 @@ import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import UserList from "./Components_Wakil/UserList";
+import CreateUser from "./Components/CreateUser";
+import ViewUser from "./ViewUser";
+import UpdateUser from "./Components/UpdateUser";
+import Navbar from "./Components/Navbar";
+import HomePage from "./Components/HomePage";
+
 const router = createBrowserRouter([
   {
-    path: "/yo",
-    element: <div>Hello world Shuvo!</div>,
+    path: "/",
+    element: <HomePage></HomePage>,
+    children: [
+      {
+        path: "/",
+        element: <UserList />,
+      },
+      {
+        path: "/createUser",
+        element: <CreateUser></CreateUser>,
+      },
+      {
+        path: "/updateUser/:id",
+        element: <UpdateUser></UpdateUser>,
+        loader: ({ params }) =>
+          fetch(
+            `http://192.168.22.131:3003/api/v1/administration/getUserProfile/${params.id}`
+          ),
+      },
+    ],
   },
+
   {
-    path: "/userList",
-    element: <UserList />,
+    path: "/viewUser",
+    element: <ViewUser></ViewUser>,
   },
 ]);
 

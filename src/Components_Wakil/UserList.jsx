@@ -6,13 +6,11 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { Paper, Typography, Link, Avatar, Stack } from "@mui/material";
-import image1 from "../assets/image1.jpg";
-import image2 from "../assets/image2.jpg";
-import ImageAvatar from "./ImageAvatars";
+
 import { Button } from "@mui/material";
 
 import axios from "axios";
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -20,41 +18,41 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { lightGreen } from "@mui/material/colors";
 
-// **************************************
+// // **************************************
 
-function createData(avatarComponent, name, dateOfBirth) {
-  return { img: avatarComponent, name, dateOfBirth };
-}
+// function createData(avatarComponent, name, dateOfBirth) {
+//   return { img: avatarComponent, name, dateOfBirth };
+// }
 
-const rows = [
-  createData(
-    <img src={image1} alt="Girl in a jacket" width="100" height="100" />,
-    "Pochaa",
-    "Dec 09, 2002"
-  ),
-  createData(
-    <img src={image2} alt="Girl in a jacket" width="100" height="100" />,
-    "Ice cream sandwich",
-    "Dec 11, 2002"
-  ),
-  createData(
-    <img src={image2} alt="Girl in a jacket" width="100" height="100" />,
-    "Eclair",
-    "Dec 12, 2002"
-  ),
-  createData(
-    <img src={image1} alt="Girl in a jacket" width="100" height="100" />,
-    "Cupcake",
-    "Dec 13, 2002"
-  ),
-  createData(
-    // <ImageAvatar img="/assets/image1.jpg" />,
-    <img src={image1} alt="Girl in a jacket" width="100" height="100" />,
-    "Gingerbread",
-    "Dec 14, 2002"
-  ),
-];
-//-----------------------------------
+// const rows = [
+//   createData(
+//     <img src={image1} alt="Girl in a jacket" width="100" height="100" />,
+//     "Pochaa",
+//     "Dec 09, 2002"
+//   ),
+//   createData(
+//     <img src={image2} alt="Girl in a jacket" width="100" height="100" />,
+//     "Ice cream sandwich",
+//     "Dec 11, 2002"
+//   ),
+//   createData(
+//     <img src={image2} alt="Girl in a jacket" width="100" height="100" />,
+//     "Eclair",
+//     "Dec 12, 2002"
+//   ),
+//   createData(
+//     <img src={image1} alt="Girl in a jacket" width="100" height="100" />,
+//     "Cupcake",
+//     "Dec 13, 2002"
+//   ),
+//   createData(
+//     // <ImageAvatar img="/assets/image1.jpg" />,
+//     <img src={image1} alt="Girl in a jacket" width="100" height="100" />,
+//     "Gingerbread",
+//     "Dec 14, 2002"
+//   ),
+// ];
+// //-----------------------------------
 
 //-----------------------------------
 
@@ -67,13 +65,13 @@ const UserList = () => {
     // console.log(userId);
     axios
       .get(
-        `http://192.168.22.131:3003/api/v1/administration/deleteUser/${userId}`
+        `http://192.168.22.239:3003/api/v1/administration/deleteUser/${userId}`
       )
       .then((response) => {
         console.log("User deleted successfully:", response.data);
         // After deletion, you might want to update the user list by fetching it again
         axios
-          .get(`http://192.168.22.131:3003/api/v1/administration/getUserList`)
+          .get(`http://192.168.22.239:3003/api/v1/administration/getUserList`)
           .then((res) => {
             const userDataFromAPI = res.data._value;
             setUsers(userDataFromAPI); // Set asset data in state after deletion
@@ -91,7 +89,7 @@ const UserList = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://192.168.22.131:3003/api/v1/administration/getUserList`)
+      .get(`http://192.168.22.239:3003/api/v1/administration/getUserList`)
       .then((res) => {
         // console.log(res);
         setUsers(res.data._value);
