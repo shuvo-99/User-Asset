@@ -2,12 +2,17 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import UserList from "./Components_Wakil/UserList";
 import CreateUser from "./Components/CreateUser";
+import UserList from "./Components/HomePage";
 import ViewUser from "./ViewUser";
 import UpdateUser from "./Components/UpdateUser";
 import Navbar from "./Components/Navbar";
 import HomePage from "./Components/HomePage";
+
+// import App from './App.jsx';
+import Profile from "./Components/Profile";
+
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +41,11 @@ const router = createBrowserRouter([
   {
     path: "/viewUser",
     element: <ViewUser></ViewUser>,
+  },
+
+  {
+    path: "/profile",
+    element: <Profile />,
   },
 ]);
 
