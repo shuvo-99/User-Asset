@@ -3,81 +3,49 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import './CreateUser.css'
+import axios from "axios";
+
 
 const CreateUser = () => {
-
-    // const [users, setUsers] = useState([]);
-    const [idCounter, setIdCounter] = useState(4);
-
-    // useEffect(() => {
-    //     fetch('/fakedata.json')
-    //         .then(res => res.json())
-    //         .then(data => setUsers(data))
-    //     console.log(users)
-    
-    // }, []);
-
-    // const updateJsonFile = async (newData) => {
-    //     // Update the static JSON file with the new data
-    //     try {
-    //         await fetch('/fakedata.json', {
-    //             method: 'PUT', // Use the correct method for your use case
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify(newData),
-    //         });
-    //     } catch (error) {
-    //         console.error('Error updating data:', error);
-    //     }
-    //     console.log(users)
-    // };
-
-    fetch("http://localhost:5000/users")
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data);
-            
-    });
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const name = event.target.name.value;
         const dob = event.target.dob.value;
         const img = event.target.image.value;
+        const pass = event.target.password.value
         console.log(name);
         console.log(dob)
         console.log(img)
         event.target.reset();
 
         const newUser = {
-            _id: idCounter,
-            name: name,
-            dob: dob,
-            image: img,
+            userName: name,
+            dobdateOfBirth: dob,
+            profileImage: img,
+            password:pass,
+
         };
 
         console.log(newUser)
 
-        // setUsers([...users, newUser]);
-        setIdCounter(idCounter + 1);
-
-        // updateJsonFile([...users, newUser]);
-
-        fetch("http://localhost:5000/users", {
-        method: "POST",
-        headers: {
-            "content-type": "application/json",
-        },
-        body: JSON.stringify(newUser),
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            console.log(data);
-            if (data.insertedID) {
-            console.log("yes, inserted");
-            
+        axios
+        .post(
+            "http://192.168.22.131:3003/api/v1/administration/addUserWithProfile",
+            newUser,
+            {
+            headers: {
+                "Content-Type": "application/json",
+            },
             }
+        )
+        .then((response) => {
+            console.log("User added successfully:", response.data);
+            
+        })
+        .catch((error) => {
+            console.error("Error adding user:", error.message);
+            
         });
         
     };
@@ -103,12 +71,15 @@ const CreateUser = () => {
                         variant="filled"
                     />
                 </div>
+                {/* <div>
+                    <p>Date of Birth</p>
+                </div> */}
                 <div>
                     <TextField
                         required
                         name='dob'
                         id="filled-required"
-                        label="Date of Birth"
+                        // label="Date of Birth"
                         type='date'
                         variant="filled"
                     />
@@ -120,6 +91,16 @@ const CreateUser = () => {
                         id="filled-required"
                         label="Image Link"
                         variant="filled"
+                    />
+                </div>
+                <div>
+                    <TextField
+                        required
+                        name='password'
+                        id="filled-required"
+                        label="Password"
+                        variant="filled"
+                        type='password'
                     />
                 </div>
                 <div className='form-btn'>
