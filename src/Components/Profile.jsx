@@ -25,6 +25,7 @@ const Profile = () => {
   const [assetsData, setAssetsData] = useState([]);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [trigger, setTrigger] = useState(false);
+  const [newAssetId, setNewAssetId] = useState("");
   const handleOpenModal = () => {
     setOpenModal(true);
   };
@@ -45,7 +46,7 @@ const Profile = () => {
     console.log(assetId);
     axios
       .get(
-        `http://192.168.22.131:3003/api/v1/administration/deleteAsset/${assetId}`
+        `http://192.168.22.239:3003/api/v1/administration/deleteAsset/${assetId}`
       )
       .then((response) => {
         console.log("Asset deleted successfully:", response.data);
@@ -53,7 +54,7 @@ const Profile = () => {
         const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
         axios
           .get(
-            `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
+            `http://192.168.22.239:3003/api/v1/administration/getAssetListByUser/${userId}`
           )
           .then((res) => {
             const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
@@ -75,7 +76,7 @@ const Profile = () => {
     const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
     axios
       .get(
-        `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
+        `http://192.168.22.239:3003/api/v1/administration/getAssetListByUser/${userId}`
       )
       .then((res) => {
         const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
@@ -88,25 +89,26 @@ const Profile = () => {
       });
   };
 
-  const handleEditSubmit = (event, asset) => {
+  const handleEditSubmit = (event) => {
     event.preventDefault(); // Prevents the default form submission behavior
 
     const formData = new FormData(event.target);
     const assetName = formData.get("name");
     const assetValue = formData.get("value");
     const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989";
-    const assetId = asset.id; // Replace with your actual user ID
+    const assetId = formData.get("assetId"); // Replace with your actual user ID
 
     console.log(assetId);
     const assetData = {
       name: assetName,
       assetvalue: assetValue,
       userId: userId,
+      id: assetId,
     };
 
     axios
       .post(
-        `http://192.168.22.131:3003/api/v1/administration/addAsset/${assetId}`, // Use the correct endpoint for updating an asset
+        `http://192.168.22.239:3003/api/v1/administration/addAsset/`, // Use the correct endpoint for updating an asset
         assetData,
         {
           headers: {
@@ -141,7 +143,7 @@ const Profile = () => {
 
     axios
       .post(
-        "http://192.168.22.131:3003/api/v1/administration/addAsset",
+        "http://192.168.22.239:3003/api/v1/administration/addAsset",
         assetData,
         {
           headers: {
@@ -152,6 +154,7 @@ const Profile = () => {
       .then((response) => {
         console.log("Asset added successfully:", response.data);
         // Update assetsData state after successful addition
+        fetchAssetsFromapi();
         setAssetsData((prevAssets) => [...prevAssets, response.data]);
         handleCloseCreateModal(); // Close the modal after successful asset addition
       })
@@ -163,7 +166,7 @@ const Profile = () => {
     // const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
     axios
       .get(
-        `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
+        `http://192.168.22.239:3003/api/v1/administration/getAssetListByUser/${userId}`
       )
       .then((res) => {
         const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
@@ -182,7 +185,7 @@ const Profile = () => {
     const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
     axios
       .get(
-        `http://192.168.22.131:3003/api/v1/administration/getUserProfile/${userId}`
+        `http://192.168.22.239:3003/api/v1/administration/getUserProfile/${userId}`
       )
       .then((res) => {
         const userDataFromAPI = res.data._value; // Retrieve user data from API response
@@ -199,23 +202,12 @@ const Profile = () => {
   }, [trigger]);
 
   //   console.log("first");
-  useEffect(() => {
-    // const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
-    axios
-      .get(`http://192.168.22.131:3003/api/v1/administration/getUserList`)
-      .then((res) => {
-        // console.log(res);
-      })
-      .catch((error) => {
-        console.error("Error fetching user profile:", error.message);
-        // Handle errors here
-      });
-  }, []);
 
   const handleEdit = (asset) => {
     setEditAsset(asset); // Set the asset being edited
     setNewAsset(asset.name); // Autofill the name field in the edit modal
     setNewAssetValue(asset.value); // Autofill the value field in the edit modal
+    setNewAssetId(asset.id); // Set the asset ID
     setOpenModal(true); // Open the modal for editing
   };
 
@@ -284,6 +276,7 @@ const Profile = () => {
           left: "50%",
           transform: "translateX(-50%)",
           width: "80%",
+          top: "350px",
         }}
       >
         {assetsData.length > 0 && (
@@ -449,6 +442,11 @@ const Profile = () => {
             >
               <h3 style={{ textAlign: "center" }}>Edit Asset</h3>
               <div>
+                <input
+                  type="hidden"
+                  name="assetId"
+                  value={editAsset ? editAsset.id : ""}
+                />
                 <TextField
                   required
                   name="name"
