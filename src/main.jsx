@@ -1,12 +1,9 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from "react";
+import ReactDOM from "react-dom/client";
 // import App from './App.jsx';
-import Profile from './Components/Profile'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import './index.css'
+import Profile from "./Components/Profile";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
@@ -14,9 +11,9 @@ const router = createBrowserRouter([
     element: <div>Hello world!</div>,
   },
   {
-    path:"/profile",
-    element: <Profile />
-  }
+    path: "/profile",
+    element: <Profile />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
