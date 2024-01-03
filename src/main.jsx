@@ -20,6 +20,11 @@ const router = createBrowserRouter([
       {
         path:"/createUser",
         element: <CreateUser></CreateUser>
+      },
+      {
+        path:"/updateUser/:id",
+        element: <UpdateUser></UpdateUser>,
+        loader: ({params}) => fetch(`http://192.168.22.131:3003/api/v1/administration/getUserProfile/${params.id}`),
       }
     ]
   },
@@ -27,12 +32,8 @@ const router = createBrowserRouter([
   {
     path:"/viewUser",
     element: <ViewUser></ViewUser>
-  },
-  {
-    path:"/updateUser/:id",
-    element: <UpdateUser></UpdateUser>,
-    loader: ({params}) => fetch(`http://192.168.22.131:3003/api/v1/administration/getUserProfile/${params.id}`),
   }
+  
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
