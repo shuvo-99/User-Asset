@@ -4,12 +4,13 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "./UpdateUser.css";
 import axios from "axios";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 
 const UpdateUser = () => {
   const loadData = useLoaderData();
+  const navigate = useNavigate();
   console.log(loadData);
-  // console.log(loadData._value.userName)
+  console.log(loadData._value.id);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -23,6 +24,7 @@ const UpdateUser = () => {
     event.target.reset();
 
     const updateUser = {
+      id: loadData._value.id,
       userName: name,
       dobdateOfBirth: dob,
       profileImage: img,
@@ -30,13 +32,32 @@ const UpdateUser = () => {
     };
 
     console.log(updateUser);
+
+    axios
+      .post(
+        "http://192.168.22.131:3003/api/v1/administration/addUserWithProfile",
+        updateUser,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("User added successfully:", response.data);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error adding user:", error.message);
+      });
   };
 
   return (
     <div className="update_form">
       <Box
         component="form"
-        onSubmit={handleSubmit} // Move onSubmit to the form element
+        onSubmit={handleSubmit}
+        // Move onSubmit to the form element
         sx={{
           "& .MuiTextField-root": { m: 1, width: "50ch" },
         }}

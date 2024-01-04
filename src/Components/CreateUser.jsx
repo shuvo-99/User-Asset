@@ -4,8 +4,11 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "./CreateUser.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateUser = () => {
+  const navigate = useNavigate();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const name = event.target.name.value;
@@ -38,6 +41,7 @@ const CreateUser = () => {
       )
       .then((response) => {
         console.log("User added successfully:", response.data);
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error adding user:", error.message);
