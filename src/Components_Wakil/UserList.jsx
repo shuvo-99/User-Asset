@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import { Paper, Typography, Avatar, Stack } from "@mui/material";
 import { Link } from "react-router-dom";
 
-import { Button } from "@mui/material";
+import { Button, Box } from "@mui/material";
 
 import axios from "axios";
 // import { faker } from "@faker-js/faker";
@@ -106,12 +106,15 @@ const UserList = () => {
       <Typography variant="h3" component="div" align="center">
         User List
       </Typography>
-      <Table align="center" sx={{ width: 650 }} aria-label="simple table">
+      <Table align="center" sx={{ width: 700 }} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell sx={{ width: "30px" }}>Image</TableCell>
             <TableCell align="right">Name</TableCell>
             <TableCell align="right">Date Of Birth</TableCell>
+            <TableCell align="right">Profile Link</TableCell>
+            <TableCell align="right">Update</TableCell>
+            <TableCell align="right">Remove</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -121,19 +124,20 @@ const UserList = () => {
               // sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell>
-                {
-                  <img
-                    src={row.profileImage}
-                    alt="No Image"
-                    width="100"
-                    height="100"
-                  />
-                }
+                <Box
+                  sx={{
+                    backgroundColor: "#ddd",
+                    height: "100px",
+                    width: "100px",
+                  }}
+                >
+                  {<img src={row.profileImage} width="100" height="100" />}
+                </Box>
               </TableCell>
               <TableCell align="right">{row.userName}</TableCell>
               <TableCell align="right">{row.dateOfBirth}</TableCell>
               <TableCell align="right">
-                <Link to="/profile">
+                <Link to={`/profile/${row.id}`}>
                   <Button>Profile</Button>
                 </Link>
               </TableCell>
