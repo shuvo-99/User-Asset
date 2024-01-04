@@ -44,8 +44,12 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/profile",
+    path: "/profile/:id",
     element: <Profile />,
+    loader: ({ params }) =>
+      fetch(
+        `http://192.168.22.131:3003/api/v1/administration/getUserProfile/${params.id}`
+      ),
   },
 ]);
 

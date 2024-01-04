@@ -15,8 +15,10 @@ import {
   TableHead,
   TextField,
 } from "@mui/material";
+import { useLoaderData } from "react-router-dom";
 
 const Profile = () => {
+  const loadData = useLoaderData();
   const [openModal, setOpenModal] = useState(false);
   const [newAsset, setNewAsset] = useState("");
   const [newAssetValue, setNewAssetValue] = useState("");
@@ -51,15 +53,16 @@ const Profile = () => {
       .then((response) => {
         console.log("Asset deleted successfully:", response.data);
         // After deletion, you might want to update the assets list by fetching it again
-        const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
+        const userId = loadData._value.id; // Replace with the actual user ID
         axios
           .get(
             `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
           )
           .then((res) => {
+            console.log(":::::::::->>>>> ", res.data);
             const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
-            setAssetsData(assetDataFromAPI); // Set asset data in state after deletion
-            console.log("Asset Data after deletion:", assetDataFromAPI); // Log the asset data
+            setAssetsData(assetDataFromAPI); // Set asset data in state
+            // console.log("Asset Data:", assetDataFromAPI); // Log the asset data
           })
           .catch((error) => {
             console.error("Error fetching asset data:", error.message);
@@ -73,12 +76,13 @@ const Profile = () => {
   };
 
   const fetchAssetsFromapi = () => {
-    const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
+    const userId = loadData._value.id; // Replace with the actual user ID
     axios
       .get(
         `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
       )
       .then((res) => {
+        console.log(":::::::::xxxxx ", res.data);
         const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
         setAssetsData(assetDataFromAPI); // Set asset data in state
         // console.log("Asset Data:", assetDataFromAPI); // Log the asset data
@@ -95,7 +99,7 @@ const Profile = () => {
     const formData = new FormData(event.target);
     const assetName = formData.get("name");
     const assetValue = formData.get("value");
-    const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989";
+    const userId = loadData._value.id;
     const assetId = formData.get("assetId"); // Replace with your actual user ID
 
     console.log(assetId);
@@ -105,7 +109,7 @@ const Profile = () => {
       userId: userId,
       id: assetId,
     };
-
+    console.log(loadData._value.id, "::::::::::::");
     axios
       .post(
         `http://192.168.22.131:3003/api/v1/administration/addAsset/`, // Use the correct endpoint for updating an asset
@@ -133,7 +137,7 @@ const Profile = () => {
     const formData = new FormData(event.target);
     const assetName = formData.get("name");
     const assetValue = formData.get("value");
-    const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with your actual user ID
+    const userId = loadData._value.id; // Replace with your actual user ID
 
     const assetData = {
       name: assetName,
@@ -182,7 +186,7 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
+    const userId = loadData._value.id; // Replace with the actual user ID
     axios
       .get(
         `http://192.168.22.131:3003/api/v1/administration/getUserProfile/${userId}`
@@ -225,7 +229,7 @@ const Profile = () => {
       >
         <Box
           sx={{
-            backgroundColor: "#316FF6",
+            backgroundColor: "#d3e4e5",
             padding: "20px",
             borderRadius: "8px",
           }}
@@ -236,22 +240,26 @@ const Profile = () => {
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={8}>
               <Typography variant="body1" textAlign={"center"} gutterBottom>
-                Name: {userData.firstName} {userData.lastName}
+                Name: {loadData._value.userName}
               </Typography>
               <Typography variant="body1" textAlign={"center"} gutterBottom>
-                Date of Birth: {userData.dateOfBirth}
+                Date of Birth: {loadData._value.dateOfBirth}
               </Typography>
             </Grid>
             <Grid item xs={4}>
               <Box
                 sx={{
-                  backgroundColor: "#ccc",
+                  backgroundColor: "#ddd",
                   height: "100px",
-                  borderRadius: "50%",
+                  width: "100px",
                 }}
               >
-                <img src={userData.profileImage} />
-                Image Box
+                <img
+                  src={userData.profileImage}
+                  alt="No Image"
+                  width="100"
+                  height="100"
+                />
               </Box>
             </Grid>
           </Grid>
