@@ -5,7 +5,8 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { Paper, Typography, Link, Avatar, Stack } from "@mui/material";
+import { Paper, Typography, Avatar, Stack } from "@mui/material";
+import { Link } from "react-router-dom";
 
 import { Button } from "@mui/material";
 
@@ -15,7 +16,7 @@ import axios from "axios";
 import { DataGrid } from "@mui/x-data-grid";
 
 import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, NavLink } from "react-router-dom";
 import { lightGreen } from "@mui/material/colors";
 
 // // **************************************
@@ -132,14 +133,14 @@ const UserList = () => {
               <TableCell align="right">{row.userName}</TableCell>
               <TableCell align="right">{row.dateOfBirth}</TableCell>
               <TableCell align="right">
-                <Link href={"https://www.google.com"} target="_blank">
-                  Profile Link
+                <Link to="/profile">
+                  <Button>Profile</Button>
                 </Link>
               </TableCell>
               <TableCell align="right">
-                <Button href={`https://www.google.com/maps/`} target="_blank">
-                  Edit
-                </Button>
+                <Link to={`/updateUser/${row.id}`}>
+                  <Button>Edit</Button>
+                </Link>
               </TableCell>
               <TableCell>
                 <Button onClick={() => handleDelete(row)}>Delete</Button>
