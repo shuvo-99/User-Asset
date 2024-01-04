@@ -1,7 +1,7 @@
-.update_form{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: lavenderblush;
-    padding-bottom: 20px;
+.update_form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: lavenderblush;
+  padding-bottom: 20px;
 }
