@@ -28,7 +28,7 @@ const CreateUser = () => {
 
     axios
       .post(
-        "http://192.168.22.239:3003/api/v1/administration/addUserWithProfile",
+        "http://192.168.22.131:3003/api/v1/administration/addUserWithProfile",
         newUser,
         {
           headers: {

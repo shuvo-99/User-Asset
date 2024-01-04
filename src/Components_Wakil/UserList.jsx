@@ -66,13 +66,13 @@ const UserList = () => {
     // console.log(userId);
     axios
       .get(
-        `http://192.168.22.239:3003/api/v1/administration/deleteUser/${userId}`
+        `http://192.168.22.131:3003/api/v1/administration/deleteUser/${userId}`
       )
       .then((response) => {
         console.log("User deleted successfully:", response.data);
         // After deletion, you might want to update the user list by fetching it again
         axios
-          .get(`http://192.168.22.239:3003/api/v1/administration/getUserList`)
+          .get(`http://192.168.22.131:3003/api/v1/administration/getUserList`)
           .then((res) => {
             const userDataFromAPI = res.data._value;
             setUsers(userDataFromAPI); // Set asset data in state after deletion
@@ -90,7 +90,7 @@ const UserList = () => {
   };
   useEffect(() => {
     axios
-      .get(`http://192.168.22.239:3003/api/v1/administration/getUserList`)
+      .get(`http://192.168.22.131:3003/api/v1/administration/getUserList`)
       .then((res) => {
         // console.log(res);
         setUsers(res.data._value);

@@ -46,7 +46,7 @@ const Profile = () => {
     console.log(assetId);
     axios
       .get(
-        `http://192.168.22.239:3003/api/v1/administration/deleteAsset/${assetId}`
+        `http://192.168.22.131:3003/api/v1/administration/deleteAsset/${assetId}`
       )
       .then((response) => {
         console.log("Asset deleted successfully:", response.data);
@@ -54,7 +54,7 @@ const Profile = () => {
         const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
         axios
           .get(
-            `http://192.168.22.239:3003/api/v1/administration/getAssetListByUser/${userId}`
+            `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
           )
           .then((res) => {
             const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
@@ -76,7 +76,7 @@ const Profile = () => {
     const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
     axios
       .get(
-        `http://192.168.22.239:3003/api/v1/administration/getAssetListByUser/${userId}`
+        `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
       )
       .then((res) => {
         const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
@@ -108,7 +108,7 @@ const Profile = () => {
 
     axios
       .post(
-        `http://192.168.22.239:3003/api/v1/administration/addAsset/`, // Use the correct endpoint for updating an asset
+        `http://192.168.22.131:3003/api/v1/administration/addAsset/`, // Use the correct endpoint for updating an asset
         assetData,
         {
           headers: {
@@ -143,7 +143,7 @@ const Profile = () => {
 
     axios
       .post(
-        "http://192.168.22.239:3003/api/v1/administration/addAsset",
+        "http://192.168.22.131:3003/api/v1/administration/addAsset",
         assetData,
         {
           headers: {
@@ -166,7 +166,7 @@ const Profile = () => {
     // const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
     axios
       .get(
-        `http://192.168.22.239:3003/api/v1/administration/getAssetListByUser/${userId}`
+        `http://192.168.22.131:3003/api/v1/administration/getAssetListByUser/${userId}`
       )
       .then((res) => {
         const assetDataFromAPI = res.data._value; // Retrieve asset data from API response
@@ -185,7 +185,7 @@ const Profile = () => {
     const userId = "f5cd1b04-9365-4273-a2ce-5a1bce64b989"; // Replace with the actual user ID
     axios
       .get(
-        `http://192.168.22.239:3003/api/v1/administration/getUserProfile/${userId}`
+        `http://192.168.22.131:3003/api/v1/administration/getUserProfile/${userId}`
       )
       .then((res) => {
         const userDataFromAPI = res.data._value; // Retrieve user data from API response
